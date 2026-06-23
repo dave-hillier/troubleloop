@@ -20,6 +20,7 @@ type OutcomeNodeData = {
   owner: string;
   metric: string;
   denominator: string;
+  engineeringWork: string;
   confidence: number;
   status: 'Healthy' | 'Watch' | 'Gap';
 };
@@ -35,8 +36,9 @@ const nodes: OutcomeNode[] = [
       eyebrow: 'Commercial reach',
       title: 'Right customers bought Feature 1 and Feature 2',
       owner: 'RevOps + Sales',
-      metric: '68% Feature 1 attach',
+      metric: '68% ICP entitlement coverage',
       denominator: 'Target accounts with identified need',
+      engineeringWork: 'Entitlement flags confirm what each account can use',
       confidence: 76,
       status: 'Healthy',
     },
@@ -49,8 +51,9 @@ const nodes: OutcomeNode[] = [
       eyebrow: 'Commercial reach',
       title: 'Price realised for placeholder feature set',
       owner: 'RevOps',
-      metric: '91% realised price',
+      metric: '91% packaged with clear scope',
       denominator: 'Closed-won contracts with Feature 1 or Feature 2',
+      engineeringWork: 'SKU-to-capability mapping keeps sold scope deployable',
       confidence: 62,
       status: 'Watch',
     },
@@ -62,9 +65,10 @@ const nodes: OutcomeNode[] = [
     data: {
       eyebrow: 'Customer activation',
       title: 'Customers live with purchased features',
-      owner: 'Implementation',
-      metric: '74% live in 60 days',
+      owner: 'Implementation + Engineering',
+      metric: '74% deployable in 60 days',
       denominator: 'Entitled customers past contract start',
+      engineeringWork: 'Provisioning, integrations, and migration blockers cleared',
       confidence: 58,
       status: 'Watch',
     },
@@ -76,9 +80,10 @@ const nodes: OutcomeNode[] = [
     data: {
       eyebrow: 'Customer activation',
       title: 'Feature 1 configured and ready to use',
-      owner: 'CS + Product Ops',
-      metric: '52% Feature 1 configured',
+      owner: 'Engineering + Product Ops',
+      metric: '52% ready-to-use configuration',
       denominator: 'Live customers with Feature 1 entitlement',
+      engineeringWork: 'Configuration defaults and data quality checks completed',
       confidence: 44,
       status: 'Gap',
     },
@@ -90,9 +95,10 @@ const nodes: OutcomeNode[] = [
     data: {
       eyebrow: 'Customer engagement',
       title: 'Feature 1 engagement rate',
-      owner: 'Product Analytics',
-      metric: '39% active / eligible',
+      owner: 'Product Engineering + Analytics',
+      metric: '39% meaningful use / eligible users',
       denominator: 'Feature 1 usage events ÷ Feature 1 eligible population',
+      engineeringWork: 'Instrumentation proves the right user action happened',
       confidence: 69,
       status: 'Watch',
     },
@@ -104,9 +110,10 @@ const nodes: OutcomeNode[] = [
     data: {
       eyebrow: 'Breadth of engagement',
       title: 'Eligible accounts using Feature 1 or Feature 2',
-      owner: 'Customer Success',
-      metric: '46% accounts active',
+      owner: 'CS + Product Engineering',
+      metric: '46% live accounts with repeated use',
       denominator: 'Accounts live with purchased placeholder feature',
+      engineeringWork: 'Reliability and account-level adoption signals visible',
       confidence: 71,
       status: 'Healthy',
     },
@@ -118,9 +125,10 @@ const nodes: OutcomeNode[] = [
     data: {
       eyebrow: 'Depth of engagement',
       title: 'Recurring weekly Feature 2 usage by target users',
-      owner: 'Product',
-      metric: '2.1 weeks / month',
+      owner: 'Product Engineering',
+      metric: '2.1 active weeks per month',
       denominator: 'Target users in eligible accounts',
+      engineeringWork: 'Workflow friction and performance issues reduced',
       confidence: 49,
       status: 'Gap',
     },
@@ -132,9 +140,10 @@ const nodes: OutcomeNode[] = [
     data: {
       eyebrow: 'Value realisation',
       title: 'Customers generate the value we promised',
-      owner: 'Exec + RevOps',
-      metric: '£18.4m GWP influenced',
+      owner: 'Exec + Engineering + RevOps',
+      metric: '£18.4m tied to value milestones',
       denominator: 'Accounts reaching defined value milestone',
+      engineeringWork: 'Outcome evidence is traceable back to shipped capabilities',
       confidence: 64,
       status: 'Watch',
     },
@@ -146,9 +155,10 @@ const nodes: OutcomeNode[] = [
     data: {
       eyebrow: 'Board signal',
       title: 'Health, expansion and renewal confidence',
-      owner: 'Revenue Leadership',
-      metric: '112% NRR forecast',
+      owner: 'Revenue + Product Leadership',
+      metric: '112% NRR with proven adoption',
       denominator: 'Renewing ARR with proven value realised',
+      engineeringWork: 'Roadmap confidence reflects adoption and value gaps',
       confidence: 73,
       status: 'Healthy',
     },
@@ -182,10 +192,11 @@ function OutcomeCard({ data }: NodeProps<OutcomeNode>) {
           <b>{data.owner}</b>
         </div>
         <div>
-          <small>Rate / signal</small>
+          <small>Value-stream signal</small>
           <b>{data.metric}</b>
         </div>
       </div>
+      <p className="engineering-work"><strong>Engineering work:</strong> {data.engineeringWork}</p>
       <p className="denominator"><strong>Eligible population:</strong> {data.denominator}</p>
       <div className="confidence" aria-label={`${data.confidence}% confidence`}>
         <span style={{ width: `${data.confidence}%` }} />
@@ -218,13 +229,8 @@ export default function App() {
         }}
       >
         <Panel position="top-left" className="canvas-panel">
-          <p className="eyebrow">Troubleloop prototype</p>
           <h1>Feature Value Realisation Map</h1>
-          <p>Engagement is shown as rates against eligible populations, using placeholder Feature 1 and Feature 2 metrics until product activity data is available.</p>
-        </Panel>
-        <Panel position="top-right" className="definition-panel">
-          <strong>Metric rule</strong>
-          <span>Engagement = meaningful usage ÷ eligible population</span>
+          <p>Follow the value stream from sold entitlement through engineering enablement, activation, meaningful usage, value evidence, and renewal confidence.</p>
         </Panel>
         <Background color="#cbd5e1" gap={30} size={1.3} variant={BackgroundVariant.Dots} />
         <MiniMap pannable zoomable position="bottom-left" nodeStrokeWidth={3} />

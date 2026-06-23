@@ -14,188 +14,164 @@ import {
   type NodeProps,
 } from '@xyflow/react';
 
-type OutcomeNodeData = {
-  eyebrow: string;
+type TreeLayer = 'Opportunity' | 'Solution' | 'Trailing measure';
+
+type ValueTreeNodeData = {
+  layer: TreeLayer;
   title: string;
+  description: string;
   owner: string;
-  metric: string;
-  denominator: string;
-  confidence: number;
+  signal: string;
   status: 'Healthy' | 'Watch' | 'Gap';
 };
 
-type OutcomeNode = Node<OutcomeNodeData, 'outcome'>;
+type ValueTreeNode = Node<ValueTreeNodeData, 'valueTree'>;
 
-const nodes: OutcomeNode[] = [
+const nodes: ValueTreeNode[] = [
   {
-    id: 'reach',
-    type: 'outcome',
-    position: { x: -720, y: -260 },
+    id: 'opp-fit',
+    type: 'valueTree',
+    position: { x: -760, y: -260 },
     data: {
-      eyebrow: 'Commercial reach',
-      title: 'Right customers bought Feature 1 and Feature 2',
-      owner: 'RevOps + Sales',
-      metric: '68% Feature 1 attach',
-      denominator: 'Target accounts with identified need',
-      confidence: 76,
+      layer: 'Opportunity',
+      title: 'Target customers have an unmet workflow need',
+      description: 'There is a clear segment where Feature 1 or Feature 2 should remove manual work, risk, or delay.',
+      owner: 'Product + RevOps',
+      signal: 'ICP accounts with named pain and entitlement potential',
       status: 'Healthy',
     },
   },
   {
-    id: 'price',
-    type: 'outcome',
-    position: { x: -720, y: 20 },
+    id: 'opp-activation',
+    type: 'valueTree',
+    position: { x: -760, y: 40 },
     data: {
-      eyebrow: 'Commercial reach',
-      title: 'Price realised for placeholder feature set',
-      owner: 'RevOps',
-      metric: '91% realised price',
-      denominator: 'Closed-won contracts with Feature 1 or Feature 2',
-      confidence: 62,
+      layer: 'Opportunity',
+      title: 'Purchased customers are not yet able to realise value',
+      description: 'Value is blocked when customers have entitlement but still need setup, data, integration, or workflow readiness.',
+      owner: 'Implementation + Product Ops',
+      signal: 'Entitled accounts waiting on readiness work',
       status: 'Watch',
     },
   },
   {
-    id: 'activation',
-    type: 'outcome',
-    position: { x: -330, y: -150 },
+    id: 'solution-entitlement',
+    type: 'valueTree',
+    position: { x: -320, y: -310 },
     data: {
-      eyebrow: 'Customer activation',
-      title: 'Customers live with purchased features',
-      owner: 'Implementation',
-      metric: '74% live in 60 days',
-      denominator: 'Entitled customers past contract start',
-      confidence: 58,
-      status: 'Watch',
-    },
-  },
-  {
-    id: 'configuration',
-    type: 'outcome',
-    position: { x: -330, y: 140 },
-    data: {
-      eyebrow: 'Customer activation',
-      title: 'Feature 1 configured and ready to use',
-      owner: 'CS + Product Ops',
-      metric: '52% Feature 1 configured',
-      denominator: 'Live customers with Feature 1 entitlement',
-      confidence: 44,
-      status: 'Gap',
-    },
-  },
-  {
-    id: 'engagement',
-    type: 'outcome',
-    position: { x: 90, y: -35 },
-    data: {
-      eyebrow: 'Customer engagement',
-      title: 'Feature 1 engagement rate',
-      owner: 'Product Analytics',
-      metric: '39% active / eligible',
-      denominator: 'Feature 1 usage events ÷ Feature 1 eligible population',
-      confidence: 69,
-      status: 'Watch',
-    },
-  },
-  {
-    id: 'breadth',
-    type: 'outcome',
-    position: { x: 500, y: -260 },
-    data: {
-      eyebrow: 'Breadth of engagement',
-      title: 'Eligible accounts using Feature 1 or Feature 2',
-      owner: 'Customer Success',
-      metric: '46% accounts active',
-      denominator: 'Accounts live with purchased placeholder feature',
-      confidence: 71,
+      layer: 'Solution',
+      title: 'Entitlement and packaging model',
+      description: 'Map sold packages to capabilities so teams know who should have access and what needs to be provisioned.',
+      owner: 'Engineering + RevOps',
+      signal: 'Feature entitlement flags available by account',
       status: 'Healthy',
     },
   },
   {
-    id: 'frequency',
-    type: 'outcome',
-    position: { x: 500, y: 20 },
+    id: 'solution-readiness',
+    type: 'valueTree',
+    position: { x: -320, y: 0 },
     data: {
-      eyebrow: 'Depth of engagement',
-      title: 'Recurring weekly Feature 2 usage by target users',
-      owner: 'Product',
-      metric: '2.1 weeks / month',
-      denominator: 'Target users in eligible accounts',
-      confidence: 49,
+      layer: 'Solution',
+      title: 'Activation readiness path',
+      description: 'Clear provisioning, configuration, migration, and integration steps that turn entitlement into a usable feature.',
+      owner: 'Engineering + Implementation',
+      signal: 'Readiness checklist completed before launch',
       status: 'Gap',
     },
   },
   {
-    id: 'value',
-    type: 'outcome',
-    position: { x: 900, y: -120 },
+    id: 'solution-usage',
+    type: 'valueTree',
+    position: { x: -320, y: 310 },
     data: {
-      eyebrow: 'Value realisation',
-      title: 'Customers generate the value we promised',
-      owner: 'Exec + RevOps',
-      metric: '£18.4m GWP influenced',
-      denominator: 'Accounts reaching defined value milestone',
-      confidence: 64,
+      layer: 'Solution',
+      title: 'Meaningful usage instrumentation',
+      description: 'Instrument the product actions that prove customers completed the workflow the feature exists to improve.',
+      owner: 'Product Engineering + Analytics',
+      signal: 'Tracked events match the intended value moment',
       status: 'Watch',
     },
   },
   {
-    id: 'renewal',
-    type: 'outcome',
-    position: { x: 900, y: 165 },
+    id: 'measure-activation',
+    type: 'valueTree',
+    position: { x: 150, y: -180 },
     data: {
-      eyebrow: 'Board signal',
-      title: 'Health, expansion and renewal confidence',
-      owner: 'Revenue Leadership',
-      metric: '112% NRR forecast',
-      denominator: 'Renewing ARR with proven value realised',
-      confidence: 73,
+      layer: 'Trailing measure',
+      title: 'Activation rate',
+      description: 'Customers who became live with the capabilities they bought after the readiness work was completed.',
+      owner: 'Implementation Leadership',
+      signal: '74% live within 60 days of contract start',
+      status: 'Watch',
+    },
+  },
+  {
+    id: 'measure-engagement',
+    type: 'valueTree',
+    position: { x: 150, y: 140 },
+    data: {
+      layer: 'Trailing measure',
+      title: 'Meaningful engagement rate',
+      description: 'Eligible users or accounts repeatedly completing the product action that indicates the workflow improved.',
+      owner: 'Product + Customer Success',
+      signal: '39% meaningful usage across eligible population',
+      status: 'Gap',
+    },
+  },
+  {
+    id: 'measure-value',
+    type: 'valueTree',
+    position: { x: 600, y: -20 },
+    data: {
+      layer: 'Trailing measure',
+      title: 'Value realised and renewal confidence',
+      description: 'Accounts where activation and engagement evidence supports value claims, expansion, and renewal confidence.',
+      owner: 'Exec + Revenue Leadership',
+      signal: '112% NRR forecast where value evidence exists',
       status: 'Healthy',
     },
   },
 ];
 
 const edges: Edge[] = [
-  { id: 'reach-activation', source: 'reach', target: 'activation', label: 'entitles', markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'price-activation', source: 'price', target: 'activation', label: 'packages', markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'activation-engagement', source: 'activation', target: 'engagement', label: 'eligible to use', markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'configuration-engagement', source: 'configuration', target: 'engagement', label: 'usable setup', markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'engagement-breadth', source: 'engagement', target: 'breadth', label: 'breadth rate', markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'engagement-frequency', source: 'engagement', target: 'frequency', label: 'depth rate', markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'breadth-value', source: 'breadth', target: 'value', label: 'proves reach', markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'frequency-value', source: 'frequency', target: 'value', label: 'proves habit', markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'value-renewal', source: 'value', target: 'renewal', label: 'board outcome', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'opp-fit-solution-entitlement', source: 'opp-fit', target: 'solution-entitlement', label: 'defines access', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'opp-fit-solution-usage', source: 'opp-fit', target: 'solution-usage', label: 'defines value moment', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'opp-activation-solution-readiness', source: 'opp-activation', target: 'solution-readiness', label: 'reveals blockers', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'solution-entitlement-measure-activation', source: 'solution-entitlement', target: 'measure-activation', label: 'enables', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'solution-readiness-measure-activation', source: 'solution-readiness', target: 'measure-activation', label: 'unblocks', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'solution-readiness-measure-engagement', source: 'solution-readiness', target: 'measure-engagement', label: 'makes usable', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'solution-usage-measure-engagement', source: 'solution-usage', target: 'measure-engagement', label: 'measures', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'measure-activation-measure-value', source: 'measure-activation', target: 'measure-value', label: 'precedes value', markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'measure-engagement-measure-value', source: 'measure-engagement', target: 'measure-value', label: 'proves use', markerEnd: { type: MarkerType.ArrowClosed } },
 ];
 
-function OutcomeCard({ data }: NodeProps<OutcomeNode>) {
+function ValueTreeCard({ data }: NodeProps<ValueTreeNode>) {
   return (
-    <article className="flow-card">
+    <article className={`flow-card flow-card--${data.layer.toLowerCase().replace(' ', '-')}`}>
       <Handle type="target" position={Position.Left} className="node-handle" />
       <div className="flow-card__header">
-        <span>{data.eyebrow}</span>
+        <span>{data.layer}</span>
         <strong className={`status ${data.status.toLowerCase()}`}>{data.status}</strong>
       </div>
       <h3>{data.title}</h3>
+      <p className="card-description">{data.description}</p>
       <div className="metric-grid">
         <div>
           <small>Owner</small>
           <b>{data.owner}</b>
         </div>
         <div>
-          <small>Rate / signal</small>
-          <b>{data.metric}</b>
+          <small>{data.layer === 'Trailing measure' ? 'Measure' : 'Signal'}</small>
+          <b>{data.signal}</b>
         </div>
-      </div>
-      <p className="denominator"><strong>Eligible population:</strong> {data.denominator}</p>
-      <div className="confidence" aria-label={`${data.confidence}% confidence`}>
-        <span style={{ width: `${data.confidence}%` }} />
       </div>
       <Handle type="source" position={Position.Right} className="node-handle" />
     </article>
   );
 }
 
-const nodeTypes = { outcome: OutcomeCard };
+const nodeTypes = { valueTree: ValueTreeCard };
 
 export default function App() {
   return (
@@ -218,13 +194,8 @@ export default function App() {
         }}
       >
         <Panel position="top-left" className="canvas-panel">
-          <p className="eyebrow">Troubleloop prototype</p>
-          <h1>Feature Value Realisation Map</h1>
-          <p>Engagement is shown as rates against eligible populations, using placeholder Feature 1 and Feature 2 metrics until product activity data is available.</p>
-        </Panel>
-        <Panel position="top-right" className="definition-panel">
-          <strong>Metric rule</strong>
-          <span>Engagement = meaningful usage ÷ eligible population</span>
+          <h1>Value Realisation Tree</h1>
+          <p>Separate the opportunity, the solution work, and the trailing measures so the map shows why teams are building before it reports what happened.</p>
         </Panel>
         <Background color="#cbd5e1" gap={30} size={1.3} variant={BackgroundVariant.Dots} />
         <MiniMap pannable zoomable position="bottom-left" nodeStrokeWidth={3} />
